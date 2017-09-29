@@ -1,7 +1,7 @@
 from bandit import Bandit
 import numpy as np
 
-def greedy_action_selection(k, numsteps):
+def greedy_action_selection(k, numsteps, epsilon = 0):
     # k: number of bandit arms
     # numsteps: number of steps (repeated action selections)
     
@@ -27,7 +27,10 @@ def greedy_action_selection(k, numsteps):
     for t in range(numsteps):
 
         # Select greedy actions as possible actions
-        Apossible[t] = np.argwhere(Q[:,t] == np.amax(Q[:,t])).flatten()
+        if np.random.rand() < epsilon:
+            Apossible[t] = np.arange(k)
+        else:
+            Apossible[t] = np.argwhere(Q[:,t] == np.amax(Q[:,t])).flatten()
 
         # Select action randomly from possible actions
         a = Apossible[t][np.random.randint(len(Apossible[t]))]
