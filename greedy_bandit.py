@@ -27,6 +27,9 @@ def greedy_action_selection(k, numsteps, epsilon = 0):
     for t in range(numsteps):
 
         # Select greedy actions as possible actions
+        if t % 100 == 0:
+            print 'Progress!!',t
+            
         if np.random.rand() < epsilon:
             Apossible[t] = np.arange(k)
         else:
