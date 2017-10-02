@@ -7,6 +7,8 @@ def run(k, numsteps, epislon):
 	
 	numtasks = 200
 	avgR = np.zeros((numsteps, ))
+
+	avgA = np.zeros((k, ))
 	
 	for e in epislon:
 		print 'Starting'
@@ -14,10 +16,19 @@ def run(k, numsteps, epislon):
 		for task in range(numtasks):
 		    bandit_task = greedy_action_selection(k, numsteps, e)
 		    avgR += bandit_task['R']
-		avgR /= numtasks
 
-		file_name = 'results_'+str(e)+'.npy'
+		    for t in range(numsteps):
+		    	a = bandit_task['A'][t]
+		    	avgA[int(a)] += 1
+		    
+		avgR /= numtasks
+		avgA /= numtasks
+
+		file_name = 'results_reward_'+str(e)+'.npy'
 		np.save(file_name, avgR)
+
+		file_name = 'results_actions_'+str(e)+'.npy'
+		np.save(file_name, avgA)
 
 def load(numsteps, epislon):
 	figs = []
@@ -38,9 +49,9 @@ if __name__ == '__main__':
 	k = 10
 	numsteps = 100000
 	epislon = [0, 0.01, 0.1]
-	# run(k, numsteps)
+	run(k, numsteps, epislon)
 
-	load(numsteps, epislon)
+	# load(numsteps, epislon)
 	
 		
 	
