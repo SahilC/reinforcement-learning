@@ -14,8 +14,8 @@ def run(k, numsteps, epislon):
 		print 'Starting'
 
 		for task in range(numtasks):
-		    bandit_task = greedy_action_selection(k, numsteps, e)
-		    #bandit_task = ucb_action_selection(k, numsteps, e)
+		    #bandit_task = greedy_action_selection(k, numsteps, e)
+		    bandit_task = ucb_action_selection(k, numsteps, e)
 		    avgR += bandit_task['R']
 
 		    for t in range(numsteps):
