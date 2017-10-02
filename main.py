@@ -5,7 +5,6 @@ from visualize import *
 
 def run(k, numsteps, epislon):
 	
-	
 	numtasks = 200
 	avgR = np.zeros((numsteps, ))
 
@@ -46,15 +45,26 @@ def load(numsteps, epislon):
 		figs.append(fig)
 	add_legend_save(figs, epislon)
 
+def load_pulled(k, epislon):
+	figs = []
+	for e in epislon:
+		avgA = np.load('results_actions_'+str(e)+'.npy')
+		print avgA.shape
+
+		fig = visualize_actions(avgA, e)
+		figs.append(fig)
+	add_legend_save(figs, epislon, 'mab_plot_mab_actions.png')
+
 
 if __name__ == '__main__':
 	# 10 arms 
 	k = 10
 	numsteps = 100000
 	epislon = [0, 0.01, 0.1]
-	run(k, numsteps, epislon)
+	# run(k, numsteps, epislon)
 
 	# load(numsteps, epislon)
+	load_pulled(numsteps, epislon)
 	
 		
 	
