@@ -1,3 +1,4 @@
+from bandit import Bandit
 import numpy as np
 def exp3(k, numsteps):
     w = np.ones((k,))
