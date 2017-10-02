@@ -4,7 +4,6 @@ from ucb import *
 from visualize import *
 
 def run(k, numsteps, epislon):
-	
 	numtasks = 200
 	avgR = np.zeros((numsteps, ))
 
@@ -14,8 +13,8 @@ def run(k, numsteps, epislon):
 		print 'Starting'
 
 		for task in range(numtasks):
-		    #bandit_task = greedy_action_selection(k, numsteps, e)
-		    bandit_task = ucb_action_selection(k, numsteps, e)
+		    bandit_task = greedy_action_selection(k, numsteps, e)
+		    #bandit_task = ucb_action_selection(k, numsteps, e)
 		    avgR += bandit_task['R']
 
 		    for t in range(numsteps):
@@ -43,7 +42,7 @@ def load(numsteps, epislon):
 			regret.append(t*15 - sumr)
 		fig = visualize(regret, e)
 		figs.append(fig)
-	add_legend_save(figs, epislon)
+	add_legend_save(figs, epislon,'mab_plot_linear_mab_regret.png')
 
 def load_pulled(k, epislon):
 	figs = []
@@ -60,7 +59,7 @@ if __name__ == '__main__':
 	# 10 arms 
 	k = 10
 	numsteps = 100000
-	epislon = [0, 0.01, 0.1]
+	epislon = [0, 0.01, 1, 2]
 	# run(k, numsteps, epislon)
 
 	# load(numsteps, epislon)
