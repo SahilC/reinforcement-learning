@@ -1,3 +1,4 @@
+from bandit import Bandit
 import numpy as np
 def ucb_action_selection(k, numsteps, c):
     # k: number of bandit arms
