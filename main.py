@@ -1,4 +1,5 @@
 import numpy as np
+from exp3 import exp3
 from greedy_bandit import *
 from ucb import *
 from visualize import *
@@ -13,8 +14,9 @@ def run(k, numsteps, epislon):
 		print 'Starting'
 
 		for task in range(numtasks):
-		    bandit_task = greedy_action_selection(k, numsteps, e)
-		    #bandit_task = ucb_action_selection(k, numsteps, e)
+			bandit_task = exp3(k, e)
+		    # bandit_task = greedy_action_selection(k, numsteps, e)
+		    # bandit_task = ucb_action_selection(k, numsteps, e)
 		    avgR += bandit_task['R']
 
 		    for t in range(numsteps):
@@ -59,11 +61,11 @@ if __name__ == '__main__':
 	# 10 arms 
 	k = 10
 	numsteps = 100000
-	epislon = [0, 0.01, 1, 2]
-	# run(k, numsteps, epislon)
+	epislon = [1000 10000, 100000]
+	run(k, numsteps, epislon)
 
 	# load(numsteps, epislon)
-	load_pulled(numsteps, epislon)
+	# load_pulled(numsteps, epislon)
 	
 		
 	
