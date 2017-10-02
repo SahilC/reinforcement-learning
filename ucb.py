@@ -58,9 +58,6 @@ def ucb_action_selection(k, numsteps, c):
             Q[:,t+1] = Q[:,t]
             Q[a,t+1] = R[t]
 
-    return {'bandit' : bandit,
-            'numsteps' : numsteps,
-            'epsilon' : epsilon,
-            'Apossible': Apossible,
+    return {'Apossible': Apossible,
             'ucb' : ucb,
             'A': A, 'N' : N, 'R' : R, 'Q' : Q}
