@@ -6,16 +6,17 @@ from visualize import *
 
 def run(k, numsteps, epislon):
 	numtasks = 200
-	avgR = np.zeros((numsteps, ))
-
-	avgA = np.zeros((k, ))
 	
 	for e in epislon:
 		print 'Starting'
 
+		avgR = np.zeros((numsteps, ))
+		
+		avgA = np.zeros((k, ))
+
 		for task in range(numtasks):
-			bandit_task = exp3(k, e)
-		    # bandit_task = greedy_action_selection(k, numsteps, e)
+			# bandit_task = exp3(k, e)
+		    bandit_task = greedy_action_selection(k, numsteps, e)
 		    # bandit_task = ucb_action_selection(k, numsteps, e)
 		    avgR += bandit_task['R']
 
@@ -61,7 +62,8 @@ if __name__ == '__main__':
 	# 10 arms 
 	k = 10
 	numsteps = 100000
-	epislon = [1000 10000, 100000]
+	epislon = [0, 0.01, 0.1]
+	# epislon = [1000 10000, 100000]
 	run(k, numsteps, epislon)
 
 	# load(numsteps, epislon)
