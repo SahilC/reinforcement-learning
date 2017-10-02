@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 
 def add_legend_save(fig, epsilon):
 	plt.legend(fig, epsilon)
-	plt.savefig('mab_plot_log_regret.png')
+	plt.savefig('mab_plot_mab_regret.png')
 
 def visualize(avgR, e):
 	fig,  = plt.plot(avgR)

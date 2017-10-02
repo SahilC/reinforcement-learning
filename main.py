@@ -15,8 +15,8 @@ def run(k, numsteps, epislon):
 		print 'Starting'
 
 		for task in range(numtasks):
-		    # bandit_task = greedy_action_selection(k, numsteps, e)
-		    bandit_task = ucb_action_selection(k, numsteps, e)
+		    bandit_task = greedy_action_selection(k, numsteps, e)
+		    #bandit_task = ucb_action_selection(k, numsteps, e)
 		    avgR += bandit_task['R']
 
 		    for t in range(numsteps):
@@ -35,7 +35,8 @@ def run(k, numsteps, epislon):
 def load(numsteps, epislon):
 	figs = []
 	for e in epislon:
-		avgR = np.load('results_'+str(e)+'.npy')
+		avgR = np.load('results_reward_'+str(e)+'.npy')
+		print avgR.shape
 		regret = []
 		sumr = 0
 		for t in range(numsteps):
