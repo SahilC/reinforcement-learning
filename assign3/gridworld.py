@@ -1,5 +1,8 @@
 from qlearn import QLearn
 from sarsa import Sarsa
+from expected_sarsa import Expected_sarsa
+from visualize import *
+
 import numpy as np
 
 class grid_world:
@@ -52,7 +55,6 @@ class grid_world:
 			rewards.append(reward)
 			states.append(self.agent_state)
 			q.learn(old_state, action, reward, self.agent_state)
-		print states
 		return np.sum(rewards)
 
 
@@ -79,28 +81,40 @@ class grid_world:
 			action = q.chooseAction(self.agent_state)
 			q.learn(old_state, old_action, reward, self.agent_state, action)
 
-		print states
+		# print states
 		return np.sum(rewards)
 
 if __name__ == '__main__':
 	actions  = [0, 1 , 2, 3]
-	# algo = 'qlearn'
-	algo = 'sarsa'
-	if algo == 'qlearn':
-		q = QLearn(actions)
-	elif algo == 'sarsa':
-		q = Sarsa(actions)
-	rewards = []
-	print('Started')
-	for i in xrange(10000):
-		g = grid_world(4,4,(1,0),(1,0),(3,3),(2,1))
+	algo = 'esarsa'
+	epsilon = [0.05, 0.2]
+	figs = []
+	init_plt()
+	for e in epsilon:
+		
 		if algo == 'qlearn':
-			r = g.update_qagent_state(q)
+			q = QLearn(actions, epsilon = e)
+		elif algo == 'sarsa':
+			q = Sarsa(actions, epsilon = e)
 		else:
-			r = g.update_sarsaagent_state(q)
-		rewards.append(r)
+			q = Expected_sarsa(actions, epsilon = e)
 
-		print i, r
+		rewards = []
+		print('Started')
+		for i in xrange(10000):
+			g = grid_world(4,4,(1,0),(1,0),(3,3),(2,1))
+			if algo == 'sarsa':
+				r = g.update_sarsaagent_state(q)
+			else:
+				r = g.update_qagent_state(q)
+				
+			rewards.append(r)
+			print i, r
+
+		fig = visualize(rewards, e)
+		figs.append(fig)
+	add_legend_save(figs, epsilon, algo+'_reward.png')
+
 	# q.printQ()
 	# q.printV()
 
