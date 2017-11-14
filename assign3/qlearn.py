@@ -1,11 +1,12 @@
+from collections import defaultdict
 import random
 
 class QLearn:
-    def __init__(self, actions, epsilon=0.05, alpha=0.2, gamma=0.99):
+    def __init__(self, actions, epsilon=0.05, gamma=0.99):
         self.q = {}
+        self.dalpha = defaultdict( lambda: defaultdict(int))
 
         self.epsilon = epsilon
-        self.alpha = alpha
         self.gamma = gamma
         self.actions = actions
 
@@ -18,7 +19,10 @@ class QLearn:
         if oldv is None:
             self.q[(state, action)] = reward
         else:
-            self.q[(state, action)] = oldv + self.alpha * (value - oldv)
+            alpha = self.dalpha[state][action]
+            if alpha != 0:
+                alpha = 1/alpha
+                self.q[(state, action)] = oldv +  alpha* (value - oldv)
 
     def add_noise_to_walk(self, action, i, ap = 0.9):
         if random.random() < ap:
@@ -51,6 +55,7 @@ class QLearn:
             action = self.add_noise_to_walk(self.actions[i], i, ap)
             # action = self.actions[i]
 
+        self.dalpha[state][action] += 1
         return action
 
     def learn(self, state1, action1, reward, state2):

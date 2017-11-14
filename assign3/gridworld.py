@@ -1,5 +1,6 @@
 from qlearn import QLearn
 from sarsa import Sarsa
+from collections import defaultdict
 from expected_sarsa import Expected_sarsa
 from visualize import *
 
@@ -55,7 +56,7 @@ class grid_world:
 			rewards.append(reward)
 			states.append(self.agent_state)
 			q.learn(old_state, action, reward, self.agent_state)
-		return np.sum(rewards)
+		return np.sum(rewards), states
 
 
 	def update_sarsaagent_state(self, q):
@@ -82,7 +83,7 @@ class grid_world:
 			q.learn(old_state, old_action, reward, self.agent_state, action)
 
 		# print states
-		return np.sum(rewards)
+		return np.sum(rewards), states
 
 if __name__ == '__main__':
 	actions  = [0, 1 , 2, 3]
@@ -104,13 +105,14 @@ if __name__ == '__main__':
 		for i in xrange(10000):
 			g = grid_world(4,4,(1,0),(1,0),(3,3),(2,1))
 			if algo == 'sarsa':
-				r = g.update_sarsaagent_state(q)
+				r, s = g.update_sarsaagent_state(q)
 			else:
-				r = g.update_qagent_state(q)
+				r, s = g.update_qagent_state(q)
 				
 			rewards.append(r)
-			print i, r
-
+			# print i, r
+			q.dalpha = defaultdict( lambda: defaultdict(int))
+		print e, s, r
 		fig = visualize(rewards, e)
 		figs.append(fig)
 	add_legend_save(figs, epsilon, algo+'_reward.png')

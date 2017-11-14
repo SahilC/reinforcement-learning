@@ -7,7 +7,7 @@ def add_legend_save(fig, epsilon, figure_name = 'esarsa_reward.png'):
 
 
 def init_plt():
-	plt.figure(figsize=(20, 10))
+	plt.figure(figsize=(30, 10))
 
 def visualize(avgR, e):
 	fig, = plt.plot(avgR)
