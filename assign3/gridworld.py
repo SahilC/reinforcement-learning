@@ -1,4 +1,5 @@
 from qlearn import QLearn
+from sarsa import Sarsa
 import numpy as np
 
 class grid_world:
@@ -35,7 +36,7 @@ class grid_world:
 			new_state[1] -= 1
 		return (new_state[0],new_state[1])
 
-	def update_agent_state(self, q):
+	def update_qagent_state(self, q):
 		# print(self.agent_state)
 		rewards = []
 		states = [self.agent_state]
@@ -54,17 +55,52 @@ class grid_world:
 		print states
 		return np.sum(rewards)
 
+
+	def update_sarsaagent_state(self, q):
+		# print(self.agent_state)
+		rewards = []
+		states = [self.agent_state]
+		old_action = None
+		old_state = None
+		while self.agent_state[0] != self.end_state[0] or self.agent_state[1] != self.end_state[1]:
+			old_state = self.agent_state
+
+			action = q.chooseAction(self.agent_state)
+			self.agent_state = self.get_action_state(self.agent_state, action)
+			reward = self.grid[self.agent_state[0]][self.agent_state[1]]
+			# print(action)
+			# print(self.agent_state)
+			# print(reward)
+			# print('---------------')
+			rewards.append(reward)
+			states.append(self.agent_state)
+			old_action = action
+
+			action = q.chooseAction(self.agent_state)
+			q.learn(old_state, old_action, reward, self.agent_state, action)
+
+		print states
+		return np.sum(rewards)
+
 if __name__ == '__main__':
 	actions  = [0, 1 , 2, 3]
-	q = QLearn(actions)
+	# algo = 'qlearn'
+	algo = 'sarsa'
+	if algo == 'qlearn':
+		q = QLearn(actions)
+	elif algo == 'sarsa':
+		q = Sarsa(actions)
 	rewards = []
 	print('Started')
 	for i in xrange(10000):
 		g = grid_world(4,4,(1,0),(1,0),(3,3),(2,1))
-		r = g.update_agent_state(q)
+		if algo == 'qlearn':
+			r = g.update_qagent_state(q)
+		else:
+			r = g.update_sarsaagent_state(q)
 		rewards.append(r)
 
 		print i, r
-		# q.printQ()
-		# q.printV()
+	# q.printQ()
+	# q.printV()
 
